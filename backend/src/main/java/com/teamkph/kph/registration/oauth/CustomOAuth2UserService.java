@@ -1,6 +1,6 @@
-package com.teamkph.kph.config.auth;
+package com.teamkph.kph.registration.oauth;
 
-import com.teamkph.kph.config.auth.dto.SessionUser;
+import com.teamkph.kph.user.domain.dto.SessionUser;
 import com.teamkph.kph.user.domain.User;
 import com.teamkph.kph.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -42,7 +41,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         return new DefaultOAuth2User(
                 Collections.singleton(
-                        new SimpleGrantedAuthority(user.getRoleKey())),
+                        new SimpleGrantedAuthority(user.getRole())),
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey()
         );

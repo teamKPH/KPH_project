@@ -1,4 +1,4 @@
-package com.teamkph.kph.config.auth.dto;
+package com.teamkph.kph.user.domain.dto;
 
 import com.teamkph.kph.user.domain.User;
 

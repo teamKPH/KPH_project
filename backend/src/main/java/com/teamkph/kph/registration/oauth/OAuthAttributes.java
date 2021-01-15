@@ -1,6 +1,5 @@
-package com.teamkph.kph.config.auth;
+package com.teamkph.kph.registration.oauth;
 
-import com.teamkph.kph.user.domain.Role;
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,7 +51,7 @@ public class OAuthAttributes {
         return User.builder()
                 .name(name)
                 .email(email)
-                .role(Role.GUEST)
+                .role("ROLE_GUEST")
                 .build();
     }
 }
