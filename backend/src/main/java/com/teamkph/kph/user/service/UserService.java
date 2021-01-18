@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
 
-    public void join(User user) {
+    public User join(User user) throws Exception{
         userRepository.findByEmail(user.getEmail())
                 .orElse(userRepository.save(user));
+        return user;
     }
 }

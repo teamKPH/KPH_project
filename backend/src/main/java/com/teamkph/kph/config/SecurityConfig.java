@@ -25,17 +25,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/", "/css/**", "/images/**", "/js/**").permitAll()
-                .antMatchers("/api/**").hasRole("ROLE_USER")
-                .anyRequest().authenticated()
+                .csrf().disable().headers().frameOptions().disable()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
+                    .authorizeRequests()
+                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/api/register").permitAll()
+                    .antMatchers("/api/**").access("hasRole('ROLE_USER')")
+                    .anyRequest().permitAll()
                 .and()
-                .oauth2Login()
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+                    .logout()
+                    .logoutSuccessUrl("/")
+                .and()
+                    .oauth2Login()
+                    .userInfoEndpoint()
+                    .userService(customOAuth2UserService);
+
+
     }
 
     @Override
