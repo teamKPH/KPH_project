@@ -32,13 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/**").access("hasRole('ROLE_USER')")
                     .anyRequest().permitAll()
                 .and()
+                    .formLogin()
+                    .loginProcessingUrl("/login")
+                    .defaultSuccessUrl("/")
+                .and()
                     .logout()
                     .logoutSuccessUrl("/")
                 .and()
                     .oauth2Login()
                     .userInfoEndpoint()
                     .userService(customOAuth2UserService);
-
 
     }
 
