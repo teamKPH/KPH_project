@@ -53,8 +53,9 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public User update(String name) {
+    public User update(String name, String password) {
         this.name = name;
+        this.password = password;
         return this;
     }
 
