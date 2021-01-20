@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -38,20 +39,20 @@ class UserControllerTest {
     @Autowired
     private UserRepository userRepository;
 
-//    @DisplayName("회원가입 테스트")
-//    @Test
-//    public void signupTest() throws Exception {
-//        Map<String, String> input = new HashMap<>();
-//        input.put("name", "test2");
-//        input.put("email", "test2@google.com");
-//        input.put("password", "test2_password");
-//
-//        mockMvc.perform(post("/signup")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(input)))
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//    }
+    @DisplayName("회원가입 테스트")
+    @Test
+    public void signupTest() throws Exception {
+        Map<String, String> input = new HashMap<>();
+        input.put("name", "test2");
+        input.put("email", "test2@google.com");
+        input.put("password", "test2_password");
+
+        mockMvc.perform(post("/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(input)))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 
 //    @DisplayName("일반 로그인 테스트")
 //    @Test
@@ -74,8 +75,10 @@ class UserControllerTest {
 
         userRepository.save(user);
 
-        User newUser = (User) mockMvc.perform(get("/user/test@google.com"));
-        Assertions.assertThat(newUser.getName()).isEqualTo("hello");
+        mockMvc.perform(get("/user?email=test@google.com"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(user)))
+                .andDo(print());
     }
 
 
@@ -95,7 +98,7 @@ class UserControllerTest {
         input.put("name", "test100");
         input.put("password", "test100_password");
 
-        mockMvc.perform(patch("/user/test3@gamil.com")
+        mockMvc.perform(patch("/user/?email=test3@google.com")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(input)))
                 .andExpect(status().isOk())

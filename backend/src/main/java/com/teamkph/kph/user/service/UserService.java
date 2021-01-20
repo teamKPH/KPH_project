@@ -36,7 +36,9 @@ public class UserService {
     public void fixUserInfo (String email, User fixInfo) throws Exception {
         Optional<User> user = userRepository.findByEmail(email);
         User fixUser = user.get();
+        System.out.println(fixUser);
         fixUser.update(fixInfo.getName(), fixInfo.getPassword());
+        System.out.println(fixUser);
     }
 
 }
