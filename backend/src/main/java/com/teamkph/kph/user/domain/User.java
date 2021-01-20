@@ -35,6 +35,15 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String role;
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
     @Builder
     public User(Long id, String password, String name, String email, String role) {
         this.id = id;
