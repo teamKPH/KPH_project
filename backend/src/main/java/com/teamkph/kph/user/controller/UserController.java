@@ -12,8 +12,18 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public void registration(@RequestBody User user) throws Exception {
         userService.join(user);
+    }
+
+    @GetMapping("/user/{email}")
+    public User findUserByEmail(@RequestParam String email) throws Exception {
+        return userService.findUserByEmail(email);
+    }
+
+    @PatchMapping("/user/{email}")
+    public void fixUserInfo(@RequestParam String email, @RequestBody User user) throws Exception {
+        userService.fixUserInfo(email, user);
     }
 }

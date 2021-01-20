@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -24,4 +26,17 @@ public class UserService {
         userRepository.findByEmail(user.getEmail())
                 .orElse(userRepository.save(user));
     }
+
+    public User findUserByEmail(String email) throws Exception{
+        Optional<User> user = userRepository.findByEmail(email);
+        Optional.ofNullable(user);
+        return user.get();
+    }
+
+    public void fixUserInfo (String email, User fixInfo) throws Exception {
+        Optional<User> user = userRepository.findByEmail(email);
+        User fixUser = user.get();
+        fixUser.update(fixInfo.getName(), fixInfo.getPassword());
+    }
+
 }
