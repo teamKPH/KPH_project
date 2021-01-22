@@ -19,9 +19,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,7 +76,6 @@ class UserControllerTest {
 
         mockMvc.perform(get("/user?email=test@google.com"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(user)))
                 .andDo(print());
     }
 
@@ -98,10 +96,30 @@ class UserControllerTest {
         input.put("name", "test100");
         input.put("password", "test100_password");
 
-        mockMvc.perform(patch("/user/?email=test3@google.com")
+        mockMvc.perform(patch("/user/test3@google.com")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(input)))
                 .andExpect(status().isOk())
                 .andDo(print());
+    }
+
+    @DisplayName("회원정보 삭제")
+    @Test
+    public void deleteUserTest() throws Exception {
+
+        User user = User.builder()
+                .name("hello2")
+                .email("hello4@google.com")
+                .password("test_password")
+                .role("ROLE_USER")
+                .build();
+
+        userRepository.save(user);
+
+        mockMvc.perform(delete("/user/hello4@google.com"))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        Assertions.assertThat(userRepository.findByEmail("hello4@google.com").isEmpty());
     }
 }

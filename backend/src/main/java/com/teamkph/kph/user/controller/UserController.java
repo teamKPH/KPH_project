@@ -18,13 +18,18 @@ public class UserController {
     }
 
     @GetMapping("/user/{email}")
-    public User findUserByEmail(@PathVariable String email) throws Exception {
+    public User findUserByEmail(@PathVariable("email") String email) throws Exception {
         return userService.findUserByEmail(email);
     }
 
     @PatchMapping("/user/{email}")
-    public void fixUserInfo(@PathVariable String email, @RequestBody User user) throws Exception {
+    public void fixUserInfo(@PathVariable("email") String email, @RequestBody User user) throws Exception {
         System.out.println(email);
         userService.fixUserInfo(email, user);
+    }
+
+    @DeleteMapping("/user/{email}")
+    public void deleteUser(@PathVariable("email") String email) throws Exception {
+        userService.deleteUser(email);
     }
 }

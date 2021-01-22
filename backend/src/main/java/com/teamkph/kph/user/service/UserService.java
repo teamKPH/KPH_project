@@ -41,4 +41,8 @@ public class UserService {
         System.out.println(fixUser);
     }
 
+    public void deleteUser(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        userRepository.delete(user.get());
+    }
 }
