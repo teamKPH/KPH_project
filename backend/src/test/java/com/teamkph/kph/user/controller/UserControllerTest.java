@@ -74,7 +74,7 @@ class UserControllerTest {
 
         userRepository.save(user);
 
-        mockMvc.perform(get("/user?email=test@google.com"))
+        mockMvc.perform(get("/user/hello@google.com"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
