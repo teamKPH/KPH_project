@@ -13,8 +13,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public void registration(@RequestBody User user) throws Exception {
-        userService.join(user);
+    public User registration(@RequestBody User user) throws Exception {
+        return userService.join(user);
     }
 
     @GetMapping("/user/{email}")
