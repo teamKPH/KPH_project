@@ -18,13 +18,14 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void join(User user) throws Exception{
+    public User join(User user) throws Exception{
         user.setRole("ROLE_USER");
         String rawPassword = user.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
         userRepository.findByEmail(user.getEmail())
                 .orElse(userRepository.save(user));
+        return user;
     }
 
     public User findUserByEmail(String email) throws Exception{
