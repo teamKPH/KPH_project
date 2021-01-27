@@ -27,18 +27,17 @@ public class UserService {
                 .orElse(userRepository.save(user));
     }
 
-    public User findUserByEmail(String email) throws Exception{
+    @Transactional
+    public UserInfoDto findUserByEmail(String email) throws Exception{
         Optional<User> user = userRepository.findByEmail(email);
-        Optional.ofNullable(user);
-        return user.get();
+        return new UserInfoDto(user.get());
     }
 
-    public void fixUserInfo (String email, User fixInfo) throws Exception {
+    @Transactional
+    public void fixUserInfo (String email, UserUpdateDto fixInfo) throws Exception {
         Optional<User> user = userRepository.findByEmail(email);
         User fixUser = user.get();
-        System.out.println(fixUser);
-        fixUser.update(fixInfo.getName(), fixInfo.getPassword());
-        System.out.println(fixUser);
+        fixUser.update(fixInfo);
     }
 
     public void deleteUser(String email) {
