@@ -16,8 +16,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public void registration(@RequestBody User user) throws Exception {
-        userService.join(user);
+    public UserSaveDto registration(@RequestBody UserSaveDto userSaveDto) throws Exception {
+        return userService.join(userSaveDto);
     }
 
     @GetMapping("/user/{email}")

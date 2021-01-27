@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import javax.transaction.Transactional;
 
 import java.util.Optional;
 
@@ -21,13 +22,15 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void join(User user) throws Exception{
-        user.setRole("ROLE_USER");
-        String rawPassword = user.getPassword();
+    @Transactional
+    public UserSaveDto join(UserSaveDto userSaveDto) throws Exception{
+        userSaveDto.setRole("ROLE_USER");
+        String rawPassword = userSaveDto.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
-        user.setPassword(encPassword);
-        userRepository.findByEmail(user.getEmail())
-                .orElse(userRepository.save(user));
+        userSaveDto.setPassword(encPassword);
+        userRepository.findByEmail(userSaveDto.getEmail())
+                .orElse(userRepository.save(userSaveDto.toEntity()));
+        return userSaveDto;
     }
 
     @Transactional
@@ -43,6 +46,7 @@ public class UserService {
         fixUser.update(fixInfo);
     }
 
+    @Transactional
     public void deleteUser(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         userRepository.delete(user.get());
