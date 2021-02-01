@@ -1,6 +1,9 @@
-package com.teamkph.kph.user.domain.dto;
+package com.teamkph.kph.user.dto;
 
 import com.teamkph.kph.user.domain.User;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

@@ -2,17 +2,18 @@ package com.teamkph.kph.user.service;
 
 import com.teamkph.kph.user.domain.User;
 import com.teamkph.kph.user.domain.UserRepository;
-import com.teamkph.kph.user.domain.dto.UserInfoDto;
-import com.teamkph.kph.user.domain.dto.UserSaveDto;
-import com.teamkph.kph.user.domain.dto.UserUpdateDto;
+import com.teamkph.kph.user.dto.UserInfoDto;
+import com.teamkph.kph.user.dto.UserSaveDto;
+import com.teamkph.kph.user.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +21,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+//    private List<String> validCheck(UserSaveDto userSaveDto, Errors errors) {
+//        List<String> errorList = new ArrayList<>();
+//
+//    }
 
     @Transactional
     public UserSaveDto join(UserSaveDto userSaveDto) throws Exception{

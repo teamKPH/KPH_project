@@ -1,6 +1,6 @@
 package com.teamkph.kph.registration.oauth;
 
-import com.teamkph.kph.user.domain.dto.SessionUser;
+import com.teamkph.kph.user.dto.SessionUser;
 import com.teamkph.kph.user.domain.User;
 import com.teamkph.kph.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;

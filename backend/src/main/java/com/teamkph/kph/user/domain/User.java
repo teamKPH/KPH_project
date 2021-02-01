@@ -1,6 +1,6 @@
 package com.teamkph.kph.user.domain;
 
-import com.teamkph.kph.user.domain.dto.UserUpdateDto;
+import com.teamkph.kph.user.dto.UserUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

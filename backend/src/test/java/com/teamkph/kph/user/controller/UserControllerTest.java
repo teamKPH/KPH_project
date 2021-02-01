@@ -3,6 +3,7 @@ package com.teamkph.kph.user.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.teamkph.kph.user.domain.User;
 import com.teamkph.kph.user.domain.UserRepository;
+import com.teamkph.kph.user.dto.UserInfoDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.HashMap;
@@ -74,6 +76,8 @@ class UserControllerTest {
 
         userRepository.save(user);
 
+
+        //then
         mockMvc.perform(get("/user/hello@google.com"))
                 .andExpect(status().isOk())
                 .andDo(print());
