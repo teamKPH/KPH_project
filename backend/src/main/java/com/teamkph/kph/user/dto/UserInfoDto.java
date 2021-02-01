@@ -1,4 +1,4 @@
-package com.teamkph.kph.user.domain.dto;
+package com.teamkph.kph.user.dto;
 
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
