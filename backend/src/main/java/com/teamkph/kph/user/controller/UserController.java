@@ -17,11 +17,13 @@ public class UserController {
 
     private final UserService userService;
 
+    @ApiOperation(value="회원가입", notes="사용자 정보 등록")
     @PostMapping("/signup")
     public UserSaveDto registration(@RequestBody @Valid UserSaveDto userSaveDto) throws Exception {
         return userService.join(userSaveDto);
     }
 
+    @ApiOperation(value="사용자 정보 조회", notes="특정 사용자 정보를 조회합니다.")
     @GetMapping("/user/{email}")
     public UserInfoDto findUserByEmail(@PathVariable("email") String email) throws Exception {
         return userService.findUserByEmail(email);
@@ -29,7 +31,7 @@ public class UserController {
 
     @ApiOperation(value="사용자 정보 수정", notes="특정 사용자의 정보를 수정합니다다.")
     @PatchMapping("/user/{email}")
-    public void fixUserInfo(@PathVariable("email") String email, @RequestBody UserUpdateDto user) throws Exception {
+    public void fixUserInfo(@PathVariable("email") String email, @RequestBody @Valid UserUpdateDto user) throws Exception {
         System.out.println(email);
         userService.fixUserInfo(email, user);
     }
