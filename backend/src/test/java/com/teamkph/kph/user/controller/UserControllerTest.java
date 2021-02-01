@@ -74,6 +74,7 @@ class UserControllerTest {
                 .role("ROLE_USER")
                 .build();
 
+        //when
         userRepository.save(user);
 
 
