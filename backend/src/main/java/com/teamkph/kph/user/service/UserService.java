@@ -2,46 +2,56 @@ package com.teamkph.kph.user.service;
 
 import com.teamkph.kph.user.domain.User;
 import com.teamkph.kph.user.domain.UserRepository;
+import com.teamkph.kph.user.dto.UserInfoDto;
+import com.teamkph.kph.user.dto.UserSaveDto;
+import com.teamkph.kph.user.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public User join(User user) throws Exception{
-        user.setRole("ROLE_USER");
-        String rawPassword = user.getPassword();
+//    private List<String> validCheck(UserSaveDto userSaveDto, Errors errors) {
+//        List<String> errorList = new ArrayList<>();
+//
+//    }
+
+    @Transactional
+    public UserSaveDto join(UserSaveDto userSaveDto) throws Exception{
+        userSaveDto.setRole("ROLE_USER");
+        String rawPassword = userSaveDto.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
-        user.setPassword(encPassword);
-        userRepository.findByEmail(user.getEmail())
-                .orElse(userRepository.save(user));
-        return user;
+        userSaveDto.setPassword(encPassword);
+        userRepository.findByEmail(userSaveDto.getEmail())
+                .orElse(userRepository.save(userSaveDto.toEntity()));
+        return userSaveDto;
     }
 
-    public User findUserByEmail(String email) throws Exception{
+    @Transactional(readOnly = true)
+    public UserInfoDto findUserByEmail(String email) throws Exception{
         Optional<User> user = userRepository.findByEmail(email);
-        Optional.ofNullable(user);
-        return user.get();
+        return new UserInfoDto(user.get());
     }
 
-    public void fixUserInfo (String email, User fixInfo) throws Exception {
+    @Transactional
+    public void fixUserInfo (String email, UserUpdateDto fixInfo) throws Exception {
         Optional<User> user = userRepository.findByEmail(email);
         User fixUser = user.get();
-        System.out.println(fixUser);
-        fixUser.update(fixInfo.getName(), fixInfo.getPassword());
-        System.out.println(fixUser);
+        fixUser.update(fixInfo);
     }
 
+    @Transactional
     public void deleteUser(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         userRepository.delete(user.get());

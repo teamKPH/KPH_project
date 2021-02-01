@@ -8,6 +8,7 @@ group = 'com.teamKPH'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -29,6 +30,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    compile group: 'javax.validation', name: 'validation-api'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 }
 
 test {
