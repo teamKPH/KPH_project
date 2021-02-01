@@ -10,17 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
 
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserSaveDto join(UserSaveDto userSaveDto) throws Exception{
@@ -33,7 +32,7 @@ public class UserService {
         return userSaveDto;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UserInfoDto findUserByEmail(String email) throws Exception{
         Optional<User> user = userRepository.findByEmail(email);
         return new UserInfoDto(user.get());
