@@ -1,5 +1,8 @@
 package com.teamkph.kph.chat.dto;
 
+import com.teamkph.kph.chat.domain.Chat;
+import com.teamkph.kph.chat.domain.MessageType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +14,15 @@ public class ChatMessageDto {
         ENTER, TALK
     }
     private MessageType type;
-    private String roomId;
     private String sender;
 
     @Setter
     private String message;
+
+    @Builder
+    public ChatMessageDto(Chat chat) {
+        this.roomId = chat.getRoomId();
+        this.type = chat.getType();
+        this.sender = chat.getSender();
+    }
 }

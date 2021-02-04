@@ -17,27 +17,27 @@ import java.util.*;
 @Service
 public class ChatService {
     private final ObjectMapper objectMapper;
-    private Map<String, ChatRoomDto> chatRooms;
+    private final ChatRoomRepository repository;
 
-    @PostConstruct
-    private void init() {
-        chatRooms = new LinkedHashMap<>();
-    }
-
-    public List<ChatRoomDto> findAllRoom() {
-        return new ArrayList<>(chatRooms.values());
-    }
-
-    public ChatRoomDto findRoomById(String roomId) {
-        return chatRooms.get(roomId);
-    }
-
-//    public ChatRoomDto createRoom(String name) {
-//        String randomId = UUID.randomUUID().toString();
-//        ChatRoomDto chatRoomDto = new ChatRoomDto(name);
-//        chatRooms.put(randomId, chatRoomDto);
-//        return chatRoomDto;
+//    public List<ChatRoomDto> findAllRoom() {
+//        List chatRooms = new ArrayList<>(chatRoomMap.values());
+//        Collections.reverse(chatRooms);
+//        return chatRooms;
 //    }
+
+    public ChatRoomDto findRoomById(String id) throws Exception {
+        Optional<ChatRoom> room = repository.findById(id);
+        return new ChatRoomDto(room.get());
+    }
+
+    public void createChatRoom(String name, List<User> users) throws Exception {
+        ChatRoomDto chatRoomDto = ChatRoomDto.create(name);
+        //chatRoomMap.put(chatRoomDto.getRoomId(), chatRoomDto);    삭제할 부분
+        //레포지토리 접근 필요
+
+
+        repository.save()
+    }
 
     public <T> void sendMessage(WebSocketSession session, T message) {
         try {

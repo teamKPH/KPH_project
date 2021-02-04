@@ -2,6 +2,7 @@ package com.teamkph.kph.chat.controller;
 
 import com.teamkph.kph.chat.dto.ChatMessageDto;
 import com.teamkph.kph.chat.dto.ChatRoomDto;
+import com.teamkph.kph.chat.domain.MessageType;
 import com.teamkph.kph.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
