@@ -16,6 +16,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue
+    @Column(name = "USER_ID")
     private Long id;
 
     @Column(nullable = true)
@@ -29,6 +30,9 @@ public class User {
 
     @Column(nullable = false)
     private String role;
+
+    @OneToMany(mappedBy = "user")
+    private List<ChatRoom> chatRoom = new ArrayList<>();
 
     public void setRole(String role) {
         this.role = role;
@@ -53,5 +57,7 @@ public class User {
         this.password = user.getPassword();
         return this;
     }
+
+    public void addChatRoom()
 
 }

@@ -1,5 +1,6 @@
 package com.teamkph.kph.user.dto;
 
+import com.teamkph.kph.chat.domain.ChatRoom;
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @Getter
 public class UserInfoDto {
@@ -18,11 +20,14 @@ public class UserInfoDto {
 
     private String role;
 
+    private List<ChatRoom> chatRoom;
+
     @Builder
     public UserInfoDto(User user) {
         this.name = user.getName();
         this.email = user.getEmail();
         this.role = user.getRole();
+        this.chatRoom = user.getChatRoom();
     }
 
 }

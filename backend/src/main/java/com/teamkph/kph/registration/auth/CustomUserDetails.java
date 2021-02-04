@@ -1,5 +1,6 @@
 package com.teamkph.kph.registration.auth;
 
+import com.teamkph.kph.chat.domain.ChatRoom;
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CustomUserDetails implements UserDetails {
@@ -27,6 +29,9 @@ public class CustomUserDetails implements UserDetails {
     @Column(nullable = false)
     private String role;
 
+    @Column(nullable = false)
+    private List<ChatRoom> chatRoom;
+
     public void setRole(String role) {
         this.role = role;
     }
@@ -42,6 +47,7 @@ public class CustomUserDetails implements UserDetails {
         this.name = user.getName();
         this.email = user.getEmail();
         this.role = user.getRole();
+        this.chatRoom = user.getChatRoom();
     }
 
 //    public User update(String name, String password) {

@@ -56,4 +56,10 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(email);
         userRepository.delete(user.get());
     }
+
+    public void addChatRoom(String email, String roomId) {
+        Optional<User> user = userRepository.findByEmail(email);
+        User fixUser = user.get();
+        fixUser.update(fixInfo);
+    }
 }

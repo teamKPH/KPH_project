@@ -1,5 +1,6 @@
 package com.teamkph.kph.user.dto;
 
+import com.teamkph.kph.chat.domain.ChatRoom;
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import java.io.Serializable;
+import java.util.List;
+
 public class SessionUser implements Serializable {
 
 
@@ -28,6 +31,10 @@ public class SessionUser implements Serializable {
     @NotBlank
     @Email
     private String email;
+
+    //session에서 생성해서 저장해주어야 하는가?
+    //private List<ChatRoom> chatRoom;
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;

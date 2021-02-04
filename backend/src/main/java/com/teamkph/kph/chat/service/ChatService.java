@@ -1,7 +1,12 @@
 package com.teamkph.kph.chat.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.teamkph.kph.chat.domain.ChatRoom;
+import com.teamkph.kph.chat.domain.ChatRoomRepository;
+import com.teamkph.kph.chat.domain.MessageType;
+import com.teamkph.kph.chat.dto.ChatMessageDto;
 import com.teamkph.kph.chat.dto.ChatRoomDto;
+import com.teamkph.kph.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -45,5 +50,11 @@ public class ChatService {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
+    }
+
+    public String message(ChatMessageDto messageDto) {
+        if(MessageType.ENTER.equals(messageDto.getType()))
+            messageDto.setMessage(messageDto.getSender() + "님이 입장하셨습니다.");
+        return "/sub/chat/room/" + messageDto.getRoomId();
     }
 }

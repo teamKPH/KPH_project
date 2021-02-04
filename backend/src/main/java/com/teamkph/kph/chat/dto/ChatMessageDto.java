@@ -9,10 +9,7 @@ import lombok.Setter;
 //메시지 DTO
 @Getter
 public class ChatMessageDto {
-
-    public enum MessageType {
-        ENTER, TALK
-    }
+    private String roomId;
     private MessageType type;
     private String sender;
 
