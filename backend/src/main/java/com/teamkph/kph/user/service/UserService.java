@@ -22,14 +22,8 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-//    private List<String> validCheck(UserSaveDto userSaveDto, Errors errors) {
-//        List<String> errorList = new ArrayList<>();
-//
-//    }
-
     @Transactional
     public UserSaveDto join(UserSaveDto userSaveDto) throws Exception{
-        userSaveDto.setRole("ROLE_USER");
         String rawPassword = userSaveDto.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         userSaveDto.setPassword(encPassword);
