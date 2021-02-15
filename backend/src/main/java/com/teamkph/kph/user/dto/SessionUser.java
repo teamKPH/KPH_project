@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 import javax.validation.constraints.Email;
@@ -35,11 +34,8 @@ public class SessionUser implements Serializable {
     @Builder
     public SessionUser(User user) {
         this.name = user.getName();
-        this.password = encrypt(user.getPassword());
         this.email = user.getEmail();
     }
 
-    private String encrypt(String email) {
-        return passwordEncoder.encode(email);
-    }
+
 }

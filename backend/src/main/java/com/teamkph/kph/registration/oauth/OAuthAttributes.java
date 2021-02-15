@@ -3,6 +3,9 @@ package com.teamkph.kph.registration.oauth;
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Map;
 

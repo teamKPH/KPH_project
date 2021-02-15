@@ -10,12 +10,19 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @RestController
 public class UserController {
 
     private final UserService userService;
+
+    @ApiOperation(value = "로그인 유저 정보 반환", notes = "현재 로그인된 유저의 정보를 반환합니다.")
+    @GetMapping("/userinfo")
+    public String currentUserName(Principal principal) {
+        return principal.getName();
+    }
 
     @ApiOperation(value="회원가입", notes="사용자 정보 등록")
     @PostMapping("/signup")
@@ -29,7 +36,7 @@ public class UserController {
         return userService.findUserByEmail(email);
     }
 
-    @ApiOperation(value="사용자 정보 수정", notes="특정 사용자의 정보를 수정합니다다.")
+    @ApiOperation(value="사용자 정보 수정", notes="특정 사용자의 정보를 수정합니다.")
     @PatchMapping("/user/{email}")
     public void fixUserInfo(@PathVariable("email") String email, @RequestBody @Valid UserUpdateDto user) throws Exception {
         System.out.println(email);
