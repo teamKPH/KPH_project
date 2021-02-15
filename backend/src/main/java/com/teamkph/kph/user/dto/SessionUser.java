@@ -20,16 +20,12 @@ public class SessionUser implements Serializable {
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z_0-9-]")
     private String name;
 
-    @NotBlank
-    @Length(min=8, max=40)
-    private String password;
+
 
     @NotBlank
     @Email
     private String email;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Builder
     public SessionUser(User user) {

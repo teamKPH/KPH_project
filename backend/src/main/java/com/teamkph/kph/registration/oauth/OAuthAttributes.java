@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Map;
 
 @Getter
@@ -15,6 +16,9 @@ public class OAuthAttributes {
     private String nameAttributeKey;
     private String name;
     private String email;
+
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     @Builder
     public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email) {
@@ -54,6 +58,7 @@ public class OAuthAttributes {
         return User.builder()
                 .name(name)
                 .email(email)
+                .password("oauth_user")
                 .role("ROLE_USER")
                 .build();
     }
