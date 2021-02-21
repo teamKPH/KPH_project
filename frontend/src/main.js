@@ -13,5 +13,10 @@ new Vue({
   router,
   store,
   vuetify,
+  beforeCreate() {
+    if (localStorage.getItem("access_token") !== null) {
+      this.$store.dispatch("getAccountInfo")
+    }
+  },
   render: h => h(App)
 }).$mount("#app")

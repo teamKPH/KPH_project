@@ -1,56 +1,82 @@
 <template>
-  <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+  <div id="app">
+    <v-app id="inspire">
+      <v-app id="inspire">
+        <v-navigation-drawer v-model="drawer" app clipped>
+          <v-list dense>
+            <v-list-item v-if="!isLogin" link router :to="{ name: 'login' }">
+              <v-list-item-action>
+                <v-icon>mdi-account</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Login</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item
+              v-else
+              @click="logout"
+              link
+              router
+              :to="{ name: 'Home' }"
+            >
+              <v-list-item-action>
+                <v-icon>mdi-account-off-outline</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Logout</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item link>
+              <v-list-item-action>
+                <v-icon>mdi-cog</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Settings</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-navigation-drawer>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+        <v-app-bar app clipped-left>
+          <v-app-bar-nav-icon
+            @click.stop="drawer = !drawer"
+          ></v-app-bar-nav-icon>
+          <v-toolbar-title>Welcome</v-toolbar-title>
+        </v-app-bar>
 
-      <v-spacer></v-spacer>
+        <v-main>
+          <v-container class="fill-height" fluid>
+            <v-row align="center" justify="center">
+              <router-view />
+            </v-row>
+          </v-container>
+        </v-main>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <HelloWorld />
-    </v-main>
-  </v-app>
+        <v-footer app>
+          <span>&copy; {{ new Date().getFullYear() }}</span>
+          <span class="ml-1">Copyright By TeamKPH</span>
+        </v-footer>
+      </v-app>
+    </v-app>
+  </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld"
-
+import { mapState, mapMutations } from "vuex"
 export default {
   name: "App",
 
-  components: {
-    HelloWorld
-  },
-
   data: () => ({
-    //
-  })
+    drawer: null
+  }),
+  computed: {
+    ...mapState(["isLogin", "userInfo"])
+  },
+  created() {
+    this.$vuetify.theme.dark = true
+  },
+  methods: {
+    ...mapMutations(["logout"])
+  }
 }
 </script>
