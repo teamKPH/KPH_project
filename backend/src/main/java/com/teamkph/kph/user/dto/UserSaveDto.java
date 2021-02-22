@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Getter
 @NoArgsConstructor
@@ -42,7 +44,7 @@ public class UserSaveDto {
                 .name(name)
                 .email(email)
                 .password(password)
-                .role("ROLE_USER")
+                .roles(new ArrayList<>(Arrays.asList("ROLE_USER")))
                 .build();
     }
 }

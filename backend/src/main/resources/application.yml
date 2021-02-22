@@ -17,7 +17,6 @@ spring:
   mustache:
     cache: false
 
-
   jpa:
     hibernate:
       ddl-auto: create #create update none

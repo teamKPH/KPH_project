@@ -16,9 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,7 +69,7 @@ class UserControllerTest {
                 .name("hello")
                 .email("hello@google.com")
                 .password("test_password")
-                .role("ROLE_USER")
+                .roles(new ArrayList<>(Arrays.asList("ROLE_USER")))
                 .build();
 
         //when
@@ -92,7 +90,7 @@ class UserControllerTest {
                 .name("test")
                 .email("test3@google.com")
                 .password("test_password")
-                .role("ROLE_USER")
+                .roles(new ArrayList<>(Arrays.asList("ROLE_USER")))
                 .build();
 
         userRepository.save(user);
@@ -116,7 +114,7 @@ class UserControllerTest {
                 .name("hello2")
                 .email("hello4@google.com")
                 .password("test_password")
-                .role("ROLE_USER")
+                .roles(new ArrayList<>(Arrays.asList("ROLE_USER")))
                 .build();
 
         userRepository.save(user);

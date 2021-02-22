@@ -1,14 +1,14 @@
 package com.teamkph.kph.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teamkph.kph.user.dto.UserUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -18,6 +18,7 @@ public class User {
     @GeneratedValue
     private Long id;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = true)
     private String password;
 
@@ -28,24 +29,18 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
 
     @Builder
-    public User(Long id, String password, String name, String email, String role) {
+    public User(Long id, String password, String name, String email, List<String> roles) {
         this.id = id;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.role = role;
+        this.roles = roles;
     }
 
     public User update(UserUpdateDto user) {
