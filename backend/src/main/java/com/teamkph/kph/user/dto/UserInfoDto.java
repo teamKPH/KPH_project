@@ -18,7 +18,7 @@ public class UserInfoDto {
 
     private String email;
 
-    private String role;
+    private List<String> roles = new ArrayList<>();
 
     @Builder
     public UserInfoDto(User user) {

@@ -20,18 +20,6 @@ import org.springframework.validation.Errors;
 public class UserService {
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
-    @Transactional
-    public UserSaveDto join(UserSaveDto userSaveDto) throws Exception{
-        String rawPassword = userSaveDto.getPassword();
-        String encPassword = passwordEncoder.encode(rawPassword);
-        userSaveDto.setPassword(encPassword);
-        userRepository.findByEmail(userSaveDto.getEmail())
-                .orElse(userRepository.save(userSaveDto.toEntity()));
-        return userSaveDto;
-    }
-
     @Transactional(readOnly = true)
     public UserInfoDto findUserByEmail(String email) throws Exception{
         Optional<User> user = userRepository.findByEmail(email);
