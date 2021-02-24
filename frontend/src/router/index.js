@@ -34,6 +34,13 @@ const routes = [
     beforeEnter: rejectAuthUser,
     component: () =>
       import(/* webpackChunkName: "login" */ "../views/Login.vue")
+  },
+  {
+    path: "/register",
+    name: "register",
+    beforeEnter: rejectAuthUser,
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Register.vue")
   }
 ]
 
