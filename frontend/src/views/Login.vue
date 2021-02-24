@@ -12,7 +12,7 @@
           <div class="pa-5">
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
-                v-model="formData.studentId"
+                :rules="emailRules"
                 label="Enter E-mail"
                 required
               ></v-text-field>
@@ -31,7 +31,15 @@
               <div class="mt-3 d-flex flex-row-reverse">
                 <v-btn color="error" class="mr-4" @click="reset"> 리셋 </v-btn>
 
-                <v-btn color="primary" class="mr-4"> 회원가입 </v-btn>
+                <v-btn
+                  color="primary"
+                  class="mr-4"
+                  link
+                  router
+                  :to="{ name: 'register' }"
+                >
+                  회원가입
+                </v-btn>
 
                 <v-btn
                   :disabled="!valid"
@@ -59,13 +67,12 @@ export default {
     valid: false,
     isError: false,
     errorMsg: "",
-    studentId: "",
-    studentIdRules: [
+    email: "",
+    emailRules: [
       v => !!v || "E-mail is required",
       v => /.+@.+\..+/.test(v) || "E-mail must be valid"
     ],
     show: false,
-    password: "",
     rules: {
       required: value => !!value || "Required.",
       min: v => v.length >= 8 || "Min 8 characters"
