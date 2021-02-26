@@ -40,7 +40,14 @@ const routes = [
     name: "register",
     beforeEnter: rejectAuthUser,
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Register.vue")
+      import(/* webpackChunkName: "register" */ "../views/Register.vue")
+  },
+  {
+    path: "/chat-list",
+    name: "chat-list",
+    // beforeEnter: onlyAuthUser,
+    component: () =>
+      import(/* webpackChunkName: "chat-list" */ "../views/Chat-List.vue")
   }
 ]
 
