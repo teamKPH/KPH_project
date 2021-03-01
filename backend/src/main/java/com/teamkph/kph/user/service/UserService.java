@@ -6,6 +6,8 @@ import com.teamkph.kph.user.dto.UserInfoDto;
 import com.teamkph.kph.user.dto.UserSaveDto;
 import com.teamkph.kph.user.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public UserInfoDto findUserByEmail(String email) throws Exception{
+    public UserInfoDto findUserByEmail() throws Exception{
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
         Optional<User> user = userRepository.findByEmail(email);
         return new UserInfoDto(user.get());
     }

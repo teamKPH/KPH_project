@@ -25,9 +25,10 @@ public class UserController {
     }
 
     @ApiOperation(value="사용자 정보 조회", notes="특정 사용자 정보를 조회합니다.")
-    @GetMapping("/user/{email}")
-    public UserInfoDto findUserByEmail(@PathVariable("email") String email) throws Exception {
-        return userService.findUserByEmail(email);
+    @GetMapping("/user")
+    public UserInfoDto findUserByEmail() throws Exception {
+
+        return userService.findUserByEmail();
     }
 
     @ApiOperation(value="사용자 정보 수정", notes="특정 사용자의 정보를 수정합니다.")

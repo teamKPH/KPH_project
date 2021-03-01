@@ -41,9 +41,9 @@ public class UserSaveDto {
 
     public User toEntity() {
         return User.builder()
-                .name(name)
-                .email(email)
-                .password(password)
+                .name(this.name)
+                .email(this.email)
+                .password(this.password)
                 .roles(new ArrayList<>(Arrays.asList("ROLE_USER")))
                 .build();
     }
