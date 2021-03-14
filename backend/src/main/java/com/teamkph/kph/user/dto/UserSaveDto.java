@@ -1,5 +1,6 @@
 package com.teamkph.kph.user.dto;
 
+import com.teamkph.kph.responseRole.CommonResult;
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
