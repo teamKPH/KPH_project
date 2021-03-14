@@ -21,7 +21,6 @@ public class AuthController {
     @ApiOperation(value="로그인", notes="사용자 로그인")
     @PostMapping("/signin/{email}/{password}")
     public UserLoginDto signin(@PathVariable("email") String email, @PathVariable("password") String password) throws Exception{
-        System.out.println(email);
         return authService.login(email, password);
     }
 

@@ -18,6 +18,10 @@ public class UserController {
 
     private final UserService userService;
 
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token",
+                required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value = "로그인 유저 정보 반환", notes = "현재 로그인된 유저의 정보를 반환합니다.")
     @GetMapping("/userinfo")
     public String currentUserName(Principal principal) {
@@ -26,8 +30,7 @@ public class UserController {
 
     @ApiOperation(value="사용자 정보 조회", notes="특정 사용자 정보를 조회합니다.")
     @GetMapping("/user")
-    public UserInfoDto findUserByEmail() throws Exception {
-
+    public ResponseEntity<UserInfoDto> findUserByEmail() throws Exception {
         return userService.findUserByEmail();
     }
 
@@ -38,6 +41,10 @@ public class UserController {
         userService.fixUserInfo(email, user);
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token",
+                    required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value="사용자 삭제", notes="사용자를 삭제합니다.")
     @DeleteMapping("/user/{email}")
     public void deleteUser(@PathVariable("email") String email) throws Exception {

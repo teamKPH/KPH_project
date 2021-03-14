@@ -1,11 +1,14 @@
 package com.teamkph.kph.user.dto;
 
+import com.teamkph.kph.responseRole.CommonResult;
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class UserLoginDto {
 
     private String token;

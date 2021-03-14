@@ -21,14 +21,14 @@ public class AuthService {
 
     public UserLoginDto login(String email, String password) throws Exception {
 //        try{
-            User user = userRepository.findByEmail(email).orElseThrow();
-            if(passwordEncoder.matches(password, user.getPassword())){
-                String token = jwtTokenProvider.createToken(email, user.getRoles());
-                return new UserLoginDto(user, token);
-            } else {
-                throw null;
-            }
-                //throw Exception;
+        User user = userRepository.findByEmail(email).orElseThrow();
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            String token = jwtTokenProvider.createToken(email, user.getRoles());
+            return new UserLoginDto(user, token);
+        } else {
+            throw null;
+        }
+        //throw Exception;
 
 //        } catch(Exception e) {
 //
@@ -36,7 +36,7 @@ public class AuthService {
     }
 
     @Transactional
-    public void join(UserSaveDto userSaveDto) throws Exception{
+    public void join(UserSaveDto userSaveDto) throws Exception {
         String rawPassword = userSaveDto.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         userSaveDto.setPassword(encPassword);
