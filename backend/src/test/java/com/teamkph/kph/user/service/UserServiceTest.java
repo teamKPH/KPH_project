@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 @SpringBootTest
@@ -30,7 +32,7 @@ class UserServiceTest {
                 .name("test")
                 .email("test@google.com")
                 .password("test_password")
-                .role("ROLE_USER")
+                .roles(new ArrayList<>(Arrays.asList("ROLE_USER")))
                 .build();
 
         userRepository.save(user);

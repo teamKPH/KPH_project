@@ -1,5 +1,6 @@
 package com.teamkph.kph.user.dto;
 
+import com.teamkph.kph.responseRole.CommonResult;
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Getter
 @NoArgsConstructor
@@ -39,10 +42,10 @@ public class UserSaveDto {
 
     public User toEntity() {
         return User.builder()
-                .name(name)
-                .email(email)
-                .password(password)
-                .role("ROLE_USER")
+                .name(this.name)
+                .email(this.email)
+                .password(this.password)
+                .roles(new ArrayList<>(Arrays.asList("ROLE_USER")))
                 .build();
     }
 }

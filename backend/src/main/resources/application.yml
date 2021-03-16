@@ -17,10 +17,15 @@ spring:
   mustache:
     cache: false
 
-
   jpa:
     hibernate:
       ddl-auto: create #create update none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+
+  jwt:
+    secret: kph@secret%key
+
+mapping.url: "*"
+
