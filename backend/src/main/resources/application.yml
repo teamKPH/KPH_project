@@ -9,7 +9,7 @@ server:
 
 spring:
   profiles:
-    include: datasource, oauth
+    include: datasource, oauth, key
 
   devtools:
     livereload:
@@ -23,9 +23,3 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
-
-  jwt:
-    secret: kph@secret%key
-
-mapping.url: "*"
-
