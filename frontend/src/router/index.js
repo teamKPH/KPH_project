@@ -48,6 +48,13 @@ const routes = [
     // beforeEnter: onlyAuthUser,
     component: () =>
       import(/* webpackChunkName: "chat-list" */ "../views/Chat-List.vue")
+  },
+  {
+    path: "/chat-make",
+    name: "chat-make",
+    // beforeEnter: onlyAuthUser,
+    component: () =>
+      import(/* webpackChunkName: "chat-list" */ "../views/Chat-Make.vue")
   }
 ]
 

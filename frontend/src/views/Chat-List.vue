@@ -11,12 +11,12 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-btn icon>
+      <v-btn icon link router :to="{ name: 'chat-make' }">
         <v-icon>mdi-chat-plus-outline</v-icon>
       </v-btn>
     </v-toolbar>
     <v-row v-if="searchActive">
-      <v-col cols="6" sm="4" md="6" class="ml-5"
+      <v-col cols="6" sm="4" md="6" style="margin-left:80px;"
         ><v-text-field v-if="true" label="채팅방" clearable></v-text-field
       ></v-col>
       <v-col cols="3" md="4">
@@ -29,7 +29,7 @@
     </v-row>
 
     <v-list two-line>
-      <v-list-item-group v-model="selected" multiple>
+      <v-list-item-group>
         <template v-for="(item, index) in items">
           <v-list-item :key="item.title">
             <template v-slot>
@@ -60,7 +60,42 @@
 <script>
 export default {
   data: () => ({
-    searchActive: false
+    searchActive: false,
+    selected: [2],
+    items: [
+      {
+        action: "15 min",
+        headline: "Brunch this weekend?",
+        subtitle: `I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
+        title: "Ali Connors"
+      },
+      {
+        action: "2 hr",
+        headline: "Summer BBQ",
+        subtitle: `Wish I could come, but I'm out of town this weekend.`,
+        title: "me, Scrott, Jennifer"
+      },
+      {
+        action: "6 hr",
+        headline: "Oui oui",
+        subtitle: "Do you have Paris recommendations? Have you ever been?",
+        title: "Sandra Adams"
+      },
+      {
+        action: "12 hr",
+        headline: "Birthday gift",
+        subtitle:
+          "Have any ideas about what we should get Heidi for her birthday?",
+        title: "Trevor Hansen"
+      },
+      {
+        action: "18hr",
+        headline: "Recipe to try",
+        subtitle:
+          "We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
+        title: "Britta Holt"
+      }
+    ]
   })
 }
 </script>
