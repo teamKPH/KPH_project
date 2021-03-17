@@ -24,7 +24,7 @@ export default new Vuex.Store({
     getAccountInfo({ commit }) {
       let token = localStorage.getItem("access_token")
       axios
-        .get("/get-account", {
+        .get("/userinfo", {
           headers: {
             "X-AUTH-TOKEN": token
           }

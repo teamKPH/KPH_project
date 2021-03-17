@@ -12,13 +12,14 @@
           <div class="pa-5">
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
+                v-model="email"
                 :rules="emailRules"
                 label="Enter E-mail"
                 required
               ></v-text-field>
 
               <v-text-field
-                v-model="formData.password"
+                v-model="password"
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[rules.required, rules.min]"
                 :type="show ? 'text' : 'password'"
@@ -45,7 +46,7 @@
                   :disabled="!valid"
                   color="success"
                   class="mr-4"
-                  @click="login(formData)"
+                  @click="login()"
                 >
                   로그인
                 </v-btn>
@@ -59,15 +60,14 @@
 </template>
 
 <script>
-import LoginObj from "../models/loginObj"
 import axios from "axios"
 export default {
   data: () => ({
-    formData: new LoginObj("", ""),
+    email: "",
+    password: "",
     valid: false,
     isError: false,
     errorMsg: "",
-    email: "",
     emailRules: [
       v => !!v || "E-mail is required",
       v => /.+@.+\..+/.test(v) || "E-mail must be valid"
@@ -79,16 +79,19 @@ export default {
     }
   }),
   methods: {
-    login(LoginObj) {
-      if (!this.formData.studentId || !this.formData.password) {
+    login() {
+      if (!this.email || !this.password) {
         this.isError = true
         this.errorMsg = "이메일과 비밀번호를 입력해주세요."
         return
       }
       axios
-        .post("/sign-in", LoginObj)
+        .post("/signin", {
+          email: this.email,
+          password: this.password
+        })
         .then(res => {
-          let token = res.data.data
+          let token = res.data.token
           localStorage.setItem("access_token", token)
           this.$store.dispatch("getAccountInfo")
           this.$router.push({ name: "Home" })

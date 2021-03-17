@@ -109,13 +109,13 @@ export default {
       }
     },
     login(LoginObj) {
-      if (!this.formData.studentId || !this.formData.password) {
+      if (!this.formData.email || !this.formData.password) {
         this.isError = true
         this.errorMsg = "이메일과 비밀번호를 입력해주세요."
         return
       }
       axios
-        .get("/sign-up", LoginObj)
+        .post("/signup", LoginObj)
         .then(res => {
           console.log(res)
         })
