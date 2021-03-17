@@ -19,7 +19,7 @@
               ></v-text-field>
 
               <v-text-field
-                v-model="formData.nickname"
+                v-model="formData.name"
                 :counter="10"
                 :rules="nameRules"
                 label="Name"
@@ -62,7 +62,7 @@
                   :disabled="!valid"
                   color="blue"
                   class="mr-4"
-                  @click="login(formData)"
+                  @click="register(formData)"
                 >
                   회원가입
                 </v-btn>
@@ -88,7 +88,6 @@ export default {
     ],
     isError: false,
     errorMsg: "",
-    email: "",
     emailRules: [
       v => !!v || "E-mail is required",
       v => /.+@.+\..+/.test(v) || "E-mail must be valid"
@@ -101,6 +100,11 @@ export default {
     }
   }),
   methods: {
+    goToMain() {
+      this.$router.push({
+        name: "login"
+      })
+    },
     sameChk(password) {
       if (this.formData.password == password) return true
       else {
@@ -108,16 +112,20 @@ export default {
         return false
       }
     },
-    login(LoginObj) {
-      if (!this.formData.email || !this.formData.password) {
+    register(RegisterObj) {
+      if (
+        !this.formData.email ||
+        !this.formData.name ||
+        !this.formData.password
+      ) {
         this.isError = true
-        this.errorMsg = "이메일과 비밀번호를 입력해주세요."
+        this.errorMsg = "이메일과 닉네임과 비밀번호를 모두 입력해주세요."
         return
       }
       axios
-        .post("/signup", LoginObj)
-        .then(res => {
-          console.log(res)
+        .post("/signup", RegisterObj)
+        .then(() => {
+          this.goToMain()
         })
         .catch(err => {
           if (err.response) {
