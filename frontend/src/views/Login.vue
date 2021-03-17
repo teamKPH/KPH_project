@@ -12,14 +12,14 @@
           <div class="pa-5">
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
-                v-model="email"
+                v-model="formData.email"
                 :rules="emailRules"
                 label="Enter E-mail"
                 required
               ></v-text-field>
 
               <v-text-field
-                v-model="password"
+                v-model="formData.password"
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[rules.required, rules.min]"
                 :type="show ? 'text' : 'password'"
@@ -46,7 +46,7 @@
                   :disabled="!valid"
                   color="success"
                   class="mr-4"
-                  @click="login()"
+                  @click="login(formData)"
                 >
                   로그인
                 </v-btn>
@@ -60,11 +60,11 @@
 </template>
 
 <script>
+import LoginObj from "../models/loginObj"
 import axios from "axios"
 export default {
   data: () => ({
-    email: "",
-    password: "",
+    formData: new LoginObj("", ""),
     valid: false,
     isError: false,
     errorMsg: "",
@@ -79,17 +79,14 @@ export default {
     }
   }),
   methods: {
-    login() {
-      if (!this.email || !this.password) {
+    login(LoginObj) {
+      if (!this.formData.email || !this.formData.password) {
         this.isError = true
         this.errorMsg = "이메일과 비밀번호를 입력해주세요."
         return
       }
       axios
-        .post("/signin", {
-          email: this.email,
-          password: this.password
-        })
+        .post("/signin", LoginObj)
         .then(res => {
           let token = res.data.token
           localStorage.setItem("access_token", token)
