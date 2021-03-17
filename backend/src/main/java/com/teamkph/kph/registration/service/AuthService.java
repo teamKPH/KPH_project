@@ -3,9 +3,10 @@ package com.teamkph.kph.registration.service;
 import com.teamkph.kph.registration.auth.JwtTokenProvider;
 import com.teamkph.kph.user.domain.User;
 import com.teamkph.kph.user.domain.UserRepository;
-import com.teamkph.kph.user.dto.UserLoginDto;
+import com.teamkph.kph.user.dto.LoginResponseDto;
 import com.teamkph.kph.user.dto.UserSaveDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,20 +20,16 @@ public class AuthService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    public UserLoginDto login(String email, String password) throws Exception {
-//        try{
-        User user = userRepository.findByEmail(email).orElseThrow();
+    public LoginResponseDto login(String email, String password){
+        User user = userRepository.findByEmail(email).orElseThrow(() -> {
+            return new UsernameNotFoundException("해당 User를 찾을 수 없습니다.");
+        });
         if (passwordEncoder.matches(password, user.getPassword())) {
             String token = jwtTokenProvider.createToken(email, user.getRoles());
-            return new UserLoginDto(user, token);
+            return new LoginResponseDto(user, token);
         } else {
             throw null;
         }
-        //throw Exception;
-
-//        } catch(Exception e) {
-//
-//        }
     }
 
     @Transactional
