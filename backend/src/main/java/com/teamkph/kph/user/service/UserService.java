@@ -6,7 +6,10 @@ import com.teamkph.kph.user.dto.UserInfoDto;
 import com.teamkph.kph.user.dto.UserSaveDto;
 import com.teamkph.kph.user.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,28 +23,13 @@ import org.springframework.validation.Errors;
 public class UserService {
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
-//    private List<String> validCheck(UserSaveDto userSaveDto, Errors errors) {
-//        List<String> errorList = new ArrayList<>();
-//
-//    }
-
-    @Transactional
-    public UserSaveDto join(UserSaveDto userSaveDto) throws Exception{
-        userSaveDto.setRole("ROLE_USER");
-        String rawPassword = userSaveDto.getPassword();
-        String encPassword = passwordEncoder.encode(rawPassword);
-        userSaveDto.setPassword(encPassword);
-        userRepository.findByEmail(userSaveDto.getEmail())
-                .orElse(userRepository.save(userSaveDto.toEntity()));
-        return userSaveDto;
-    }
-
     @Transactional(readOnly = true)
-    public UserInfoDto findUserByEmail(String email) throws Exception{
+    public ResponseEntity<UserInfoDto> findUserByEmail() throws Exception{
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
         Optional<User> user = userRepository.findByEmail(email);
-        return new UserInfoDto(user.get());
+
+        return new ResponseEntity<>(new UserInfoDto(user.get()), HttpStatus.BAD_REQUEST);
     }
 
     @Transactional

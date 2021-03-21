@@ -1,6 +1,6 @@
 package com.teamkph.kph.user.dto;
 
-import com.teamkph.kph.chat.domain.ChatRoom;
+import com.teamkph.kph.responseRole.CommonResult;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -16,7 +15,7 @@ public class UserUpdateDto {
 
     @NotBlank
     @Length(min=3, max=30)
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z_0-9-]")
+    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z0-9_-]{3,20}$")
     private String name;
 
     @NotBlank

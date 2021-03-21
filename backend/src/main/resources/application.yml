@@ -9,14 +9,13 @@ server:
 
 spring:
   profiles:
-    include: datasource, oauth
+    include: datasource, oauth, key
 
   devtools:
     livereload:
       enabled: true
   mustache:
     cache: false
-
 
   jpa:
     hibernate:
