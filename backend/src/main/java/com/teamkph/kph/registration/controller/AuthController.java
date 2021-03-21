@@ -1,11 +1,14 @@
 package com.teamkph.kph.registration.controller;
 
+import com.teamkph.kph.advice.customException.CustomValidationException;
 import com.teamkph.kph.registration.service.AuthService;
 import com.teamkph.kph.user.dto.LoginRequestDto;
 import com.teamkph.kph.user.dto.LoginResponseDto;
 import com.teamkph.kph.user.dto.UserSaveDto;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,7 +27,7 @@ public class AuthController {
 
     @ApiOperation(value="회원가입", notes="사용자 정보 등록")
     @PostMapping("/signup")
-    public void registration(@RequestBody @Valid UserSaveDto userSaveDto) throws Exception {
-       authService.join(userSaveDto);
+    public void registration(@ApiParam(value = "회원가입 요청 객체", required = true) @RequestBody @Valid UserSaveDto userSaveDto, Errors errors) {
+       authService.join(userSaveDto, errors);
     }
 }
