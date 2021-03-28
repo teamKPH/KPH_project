@@ -2,6 +2,9 @@ package com.teamkph.kph.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teamkph.kph.chat.domain.ChatRoom;
+import com.teamkph.kph.chat.domain.UserChatRoom;
+import com.teamkph.kph.chat.dto.ChatRoomDto;
+import com.teamkph.kph.user.dto.UserChatRoomListUpdateDto;
 import com.teamkph.kph.user.dto.UserUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,15 +44,7 @@ public class User implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<ChatRoom> chatRoom = new ArrayList<>();
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    private List<UserChatRoom> userChatRooms = new ArrayList<>();
 
 
     @Builder
@@ -66,6 +61,11 @@ public class User implements UserDetails {
         this.password = user.getPassword();
         return this;
     }
+
+//    public User update(UserChatRoomListUpdateDto user, ) {
+//        this.userChatRooms.add();
+//        return this;
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -108,6 +108,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void addChatRoom()
+//    public void addChatRoom()
 
 }

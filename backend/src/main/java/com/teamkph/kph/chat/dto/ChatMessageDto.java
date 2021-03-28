@@ -1,7 +1,6 @@
 package com.teamkph.kph.chat.dto;
 
 import com.teamkph.kph.chat.domain.Chat;
-import com.teamkph.kph.chat.domain.MessageType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +9,11 @@ import lombok.Setter;
 @Getter
 public class ChatMessageDto {
     private String roomId;
+
+    public enum MessageType {
+        ENTER, TALK
+    }
+
     private MessageType type;
     private String sender;
 

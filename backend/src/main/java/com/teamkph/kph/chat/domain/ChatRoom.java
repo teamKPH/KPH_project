@@ -16,12 +16,17 @@ public class ChatRoom {
     private String roomId;
     @Column
     private String name;
+    @Column
+    private Integer userCount;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User user;
+    @OneToMany(mappedBy = "chatRoom")
+    private List<UserChatRoom> userChatRooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "chatroom")
+    @OneToMany(mappedBy = "chatRoom")
     private List<Chat> chat = new ArrayList<>();
 
+    public void update(ChatRoom chatRoom, UserChatRoom userChatRoom) {
+        chatRoom.userChatRooms.add(userChatRoom);
+        return;
+    }
 }

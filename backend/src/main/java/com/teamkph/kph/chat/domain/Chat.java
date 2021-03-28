@@ -1,5 +1,6 @@
 package com.teamkph.kph.chat.domain;
 
+import com.teamkph.kph.chat.dto.ChatMessageDto;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -9,11 +10,12 @@ import javax.persistence.*;
 public class Chat {
 
     @Id
+    @Column(name = "CHAT_ID")
     private String roomId;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private MessageType type;
+    private ChatMessageDto.MessageType type;
 
     @Column
     private String sender;

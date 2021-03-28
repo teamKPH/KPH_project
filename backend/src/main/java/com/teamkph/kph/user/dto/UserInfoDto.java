@@ -1,5 +1,7 @@
 package com.teamkph.kph.user.dto;
 
+import com.teamkph.kph.chat.domain.ChatRoom;
+import com.teamkph.kph.chat.domain.UserChatRoom;
 import com.teamkph.kph.responseRole.CommonResult;
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
@@ -21,13 +23,13 @@ public class UserInfoDto {
 
     private List<String> roles = new ArrayList<>();
 
-    private List<ChatRoom> chatRoom;
+    private List<UserChatRoom> userChatRooms = new ArrayList<>();
 
     @Builder
     public UserInfoDto(User user) {
         this.name = user.getName();
         this.email = user.getEmail();
-        this.chatRoom = user.getChatRoom();
+        this.userChatRooms = user.getUserChatRooms();
         this.roles = user.getRoles();
     }
 
