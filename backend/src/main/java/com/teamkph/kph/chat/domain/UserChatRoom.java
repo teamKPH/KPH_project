@@ -1,6 +1,7 @@
 package com.teamkph.kph.chat.domain;
 
 
+import com.teamkph.kph.chat.domain.chatRoom.ChatRoom;
 import com.teamkph.kph.user.domain.User;
 import lombok.Getter;
 

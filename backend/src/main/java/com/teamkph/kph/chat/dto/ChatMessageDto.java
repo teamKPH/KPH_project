@@ -1,29 +1,40 @@
 package com.teamkph.kph.chat.dto;
 
-import com.teamkph.kph.chat.domain.Chat;
+import com.teamkph.kph.chat.domain.chatMessage.ChatMessage;
+import com.teamkph.kph.chat.domain.MessageType;
+import com.teamkph.kph.chat.domain.chatRoom.ChatRoom;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.sql.Date;
+
 //메시지 DTO
 @Getter
 public class ChatMessageDto {
-    private String roomId;
-
-    public enum MessageType {
-        ENTER, TALK
-    }
+    private Long roomId;
 
     private MessageType type;
     private String sender;
 
+    private Date sendDate;
+
     @Setter
-    private String message;
+    private String content;
+
+    private ChatRoom chatRoom;
 
     @Builder
-    public ChatMessageDto(Chat chat) {
-        this.roomId = chat.getRoomId();
-        this.type = chat.getType();
-        this.sender = chat.getSender();
+    public ChatMessageDto(ChatMessage chatMessage) {
+        this.roomId = chatMessage.getRoomId();
+        this.type = chatMessage.getType();
+        this.sender = chatMessage.getSender();
+        this.content = chatMessage.getContent();
+        this.chatRoom = chatMessage.getChatRoom();
+        this.sendDate = chatMessage.getSendDate();
     }
+
 }

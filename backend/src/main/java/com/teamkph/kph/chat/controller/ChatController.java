@@ -1,15 +1,11 @@
 package com.teamkph.kph.chat.controller;
 
-import com.teamkph.kph.chat.domain.ChatRoom;
 import com.teamkph.kph.chat.dto.ChatMessageDto;
 import com.teamkph.kph.chat.dto.ChatRoomDto;
 import com.teamkph.kph.chat.service.ChatService;
 
-import com.teamkph.kph.user.domain.User;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -73,10 +69,9 @@ public class ChatController {
 
     @MessageMapping("/message")
     public void message(ChatMessageDto message) {
-
-        if (ChatMessageDto.MessageType.ENTER.equals(message.getType()))
-            message.setMessage(message.getSender() + "님이 입장하셨습니다.");
+        chatService.sendMessage(message);
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+
 
 //        String sub = chatService.message(messageDto);
 //        messageSendingOperations.convertAndSend(sub, messageDto);

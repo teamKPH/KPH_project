@@ -1,6 +1,7 @@
-package com.teamkph.kph.chat.domain;
+package com.teamkph.kph.chat.domain.chatRoom;
 
-import com.teamkph.kph.user.domain.User;
+import com.teamkph.kph.chat.domain.UserChatRoom;
+import com.teamkph.kph.chat.domain.chatMessage.ChatMessage;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -12,8 +13,9 @@ import java.util.List;
 public class ChatRoom {
 
     @Id
+    @GeneratedValue
     @Column(name = "CHATROOM_ID")
-    private String roomId;
+    private Long roomId;
     @Column
     private String name;
     @Column
@@ -23,7 +25,7 @@ public class ChatRoom {
     private List<UserChatRoom> userChatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "chatRoom")
-    private List<Chat> chat = new ArrayList<>();
+    private List<ChatMessage> chatMessage = new ArrayList<>();
 
     public void update(ChatRoom chatRoom, UserChatRoom userChatRoom) {
         chatRoom.userChatRooms.add(userChatRoom);

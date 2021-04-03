@@ -1,10 +1,7 @@
 package com.teamkph.kph.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.teamkph.kph.chat.domain.ChatRoom;
 import com.teamkph.kph.chat.domain.UserChatRoom;
-import com.teamkph.kph.chat.dto.ChatRoomDto;
-import com.teamkph.kph.user.dto.UserChatRoomListUpdateDto;
 import com.teamkph.kph.user.dto.UserUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
