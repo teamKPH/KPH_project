@@ -1,7 +1,7 @@
 package com.teamkph.kph.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.teamkph.kph.chat.domain.UserChatRoom;
+import com.teamkph.kph.chat.domain.userChatRoom.UserChatRoom;
 import com.teamkph.kph.user.dto.UserUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,10 +58,11 @@ public class User implements UserDetails {
         return this;
     }
 
-//    public User update(UserChatRoomListUpdateDto user, ) {
-//        this.userChatRooms.add();
-//        return this;
-//    }
+    public User update(UserChatRoom userChatRoom) {
+        this.userChatRooms.add(userChatRoom);
+        return this;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

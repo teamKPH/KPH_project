@@ -6,8 +6,10 @@ import com.teamkph.kph.chat.domain.chatMessage.ChatMessageRepository;
 import com.teamkph.kph.chat.domain.chatRoom.ChatRoom;
 import com.teamkph.kph.chat.domain.chatRoom.ChatRoomRepository;
 import com.teamkph.kph.chat.domain.MessageType;
+import com.teamkph.kph.chat.domain.userChatRoom.UserChatRoomRepository;
 import com.teamkph.kph.chat.dto.ChatMessageDto;
 import com.teamkph.kph.chat.dto.ChatRoomDto;
+import com.teamkph.kph.chat.dto.UserChatRoomDto;
 import com.teamkph.kph.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final UserChatRoomRepository userChatRoomRepository;
     private final SimpMessageSendingOperations messagingTemplate;
 
 //   @PostConstruct
@@ -60,14 +63,17 @@ public class ChatService {
         return new ChatRoomDto(chatRoom.get());
     }
 
-//    public void addUserToChatRoom(List<User> users) {
-//        //user update
-//
-//        //chatroom update
-//        //이중포문으로 ChatRoom 생성
-//
-//
-//    }
+    public void addUserToChatRoom(Long id, List<User> users) {
+        ChatRoom chatRoom = chatRoomRepository.findById(id).get();
+        //UserChatRoom 생성 및 ChatRoom, User에 UserChatRoom 추가
+        for(User user : users) {
+            UserChatRoomDto userChatRoomDto = new UserChatRoomDto(user, chatRoom);
+            userChatRoomRepository.save(userChatRoomDto.toEntity());
+            chatRoom.update(userChatRoomDto.toEntity());
+            user.update(userChatRoomDto.toEntity());
+        }
+
+    }
 
     public void sendMessage(ChatMessageDto message) {
         if (MessageType.ENTER.equals(message.getType()))

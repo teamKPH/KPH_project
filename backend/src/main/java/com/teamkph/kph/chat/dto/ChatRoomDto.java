@@ -3,12 +3,11 @@ package com.teamkph.kph.chat.dto;
 //채팅방 DTO
 
 import com.teamkph.kph.chat.domain.chatRoom.ChatRoom;
-import com.teamkph.kph.chat.domain.UserChatRoom;
+import com.teamkph.kph.chat.domain.userChatRoom.UserChatRoom;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

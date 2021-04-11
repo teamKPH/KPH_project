@@ -1,6 +1,6 @@
 package com.teamkph.kph.user.dto;
 
-import com.teamkph.kph.chat.domain.UserChatRoom;
+import com.teamkph.kph.chat.domain.userChatRoom.UserChatRoom;
 import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;

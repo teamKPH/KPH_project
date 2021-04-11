@@ -56,10 +56,10 @@ public class ChatController {
         return chatService.findRoomById(roomId);
     }
 
-//    @PutMapping("/adduser")
-//    public void addUserToChatRoom(@RequestBody List<User> users) {
-//        //chatService.addUserToChatRoom(users);
-//    }
+    @PutMapping("/adduser/{id}")
+    public void addUserToChatRoom(@PathVariable Long id, @RequestBody List<User> users) {
+        chatService.addUserToChatRoom(id, users);
+    }
 
     @MessageMapping("/message")
     public void sendMessage(ChatMessageDto message) {

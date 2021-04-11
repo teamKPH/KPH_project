@@ -1,6 +1,6 @@
 package com.teamkph.kph.chat.domain.chatRoom;
 
-import com.teamkph.kph.chat.domain.UserChatRoom;
+import com.teamkph.kph.chat.domain.userChatRoom.UserChatRoom;
 import com.teamkph.kph.chat.domain.chatMessage.ChatMessage;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,7 +43,7 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatMessage> chatMessage = new ArrayList<>();
 
-    public void update(ChatRoom chatRoom, UserChatRoom userChatRoom) {
-        chatRoom.userChatRooms.add(userChatRoom);
+    public void update(UserChatRoom userChatRoom) {
+        this.userChatRooms.add(userChatRoom);
     }
 }
