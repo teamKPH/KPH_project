@@ -4,9 +4,9 @@ import com.teamkph.kph.chat.dto.ChatMessageDto;
 import com.teamkph.kph.chat.dto.ChatRoomDto;
 import com.teamkph.kph.chat.service.ChatService;
 
+import com.teamkph.kph.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,6 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    private final SimpMessageSendingOperations messagingTemplate;
 
     //채팅 리스트
     @GetMapping("/room")
@@ -41,20 +40,8 @@ public class ChatController {
     public ChatRoomDto createRoom(@RequestParam String name) {
         return chatService.createChatRoom(name);
     }
-//
-//    // 채팅방 입장 화면
-//    @GetMapping("/room/enter/{roomId}")
-//    public String roomDetail(Model model, @PathVariable String roomId) {
-//        model.addAttribute("roomId", roomId);
-//        return "/chat/roomdetail";
-//    }
-//
-//    //특정채팅방조회
-//    @GetMapping("/room/{roomId}")
-//    @ResponseBody
-//    public ChatRoomDto roomInfo(@PathVariable String roomId) {
-//        return chatService.findRoomById(roomId);
-//    }
+
+
 
 //    @PostMapping("/chat")
 //    public void createChatRoom(@RequestParam String name, @RequestBody List<User> users) {
@@ -62,25 +49,21 @@ public class ChatController {
 //        return;
 //    }
 
-//    @PostMapping("/adduser")
+ // 특정채팅방조회
+    @GetMapping("/room/{roomId}")
+    @ResponseBody
+    public ChatRoomDto roomInfo(@PathVariable Long roomId) {
+        return chatService.findRoomById(roomId);
+    }
+
+//    @PutMapping("/adduser")
 //    public void addUserToChatRoom(@RequestBody List<User> users) {
 //        //chatService.addUserToChatRoom(users);
 //    }
 
     @MessageMapping("/message")
-    public void message(ChatMessageDto message) {
+    public void sendMessage(ChatMessageDto message) {
         chatService.sendMessage(message);
-        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
-
-
-//        String sub = chatService.message(messageDto);
-//        messageSendingOperations.convertAndSend(sub, messageDto);
     }
 
-//    @GetMapping()
-//    public List<ChatRoomDto> findAllRoomByEmail(String email) {
-//
-//    }
-
-    //채팅방 정보 반환 API 생성해야함
 }
