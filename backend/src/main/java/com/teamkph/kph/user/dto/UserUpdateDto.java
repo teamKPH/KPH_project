@@ -1,6 +1,7 @@
 package com.teamkph.kph.user.dto;
 
 import com.teamkph.kph.responseRole.CommonResult;
+import com.teamkph.kph.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,8 @@ public class UserUpdateDto {
     private String password;
 
     @Builder
-    public UserUpdateDto(String name, String password) {
-        this.name = name;
-        this.password = password;
+    public UserUpdateDto(User user) {
+        this.name = user.getName();
+        this.password = user.getPassword();
     }
 }

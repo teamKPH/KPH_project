@@ -1,7 +1,9 @@
 package com.teamkph.kph.user.service;
 
+import com.teamkph.kph.chat.dto.ChatRoomDto;
 import com.teamkph.kph.user.domain.User;
 import com.teamkph.kph.user.domain.UserRepository;
+import com.teamkph.kph.user.dto.UserChatRoomListUpdateDto;
 import com.teamkph.kph.user.dto.UserInfoDto;
 import com.teamkph.kph.user.dto.UserSaveDto;
 import com.teamkph.kph.user.dto.UserUpdateDto;
@@ -44,4 +46,12 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(email);
         userRepository.delete(user.get());
     }
+
+//    @Transactional
+//    public void addChatRoom(User updateUser, ChatRoomDto chatRoomDto) {
+//        //User fixuser = userRepository.findByEmail(user.getEmail()).get()
+//
+//        .update(updateUser, chatRoomDto.getRoomId());
+////        fixUser.update(fixInfo);
+//    }
 }

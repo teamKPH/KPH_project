@@ -1,6 +1,7 @@
 package com.teamkph.kph.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.teamkph.kph.chat.domain.userChatRoom.UserChatRoom;
 import com.teamkph.kph.user.dto.UserUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     @Id
     @GeneratedValue
+    @Column(name = "USER_ID")
     private Long id;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -35,6 +39,8 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<UserChatRoom> userChatRooms = new ArrayList<>();
 
 
     @Builder
@@ -51,6 +57,12 @@ public class User implements UserDetails {
         this.password = user.getPassword();
         return this;
     }
+
+    public User update(UserChatRoom userChatRoom) {
+        this.userChatRooms.add(userChatRoom);
+        return this;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -92,5 +104,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+//    public void addChatRoom()
 
 }
