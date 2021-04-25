@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -41,14 +43,6 @@ public class ChatController {
         return chatService.createChatRoom(name);
     }
 
-
-
-//    @PostMapping("/chat")
-//    public void createChatRoom(@RequestParam String name, @RequestBody List<User> users) {
-//        //chatService.createChatRoom(name, users);
-//        return;
-//    }
-
  // 특정채팅방조회
     @GetMapping("/room/{roomId}")
     @ResponseBody
@@ -66,4 +60,15 @@ public class ChatController {
         chatService.sendMessage(message);
     }
 
+
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
+    @PostMapping("/upload")
+    @ResponseBody
+    public String upload(@RequestParam("data")MultipartFile multipartFile) throws IOException {
+        return chatService.upload(multipartFile, "static");
+    }
 }

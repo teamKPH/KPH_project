@@ -37,6 +37,7 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
 }
 
 test {
