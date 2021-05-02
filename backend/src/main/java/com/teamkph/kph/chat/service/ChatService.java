@@ -1,7 +1,12 @@
 package com.teamkph.kph.chat.service;
 
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.teamkph.kph.chat.domain.chatMessage.ChatMessage;
@@ -17,10 +22,12 @@ import com.teamkph.kph.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,9 +45,19 @@ public class ChatService {
     private final UserChatRoomRepository userChatRoomRepository;
     private final SimpMessageSendingOperations messagingTemplate;
     private final AmazonS3Client amazonS3Client;
+    private AmazonS3 s3Client;
 
     @Value("{cloud.aws.s3.bucket}")
     private String bucket;
+
+    @Value("${aws.credentials.accessKey}")
+    private String accessKey;
+
+    @Value("${aws.credentials.secretKey}")
+    private String secretKey;
+
+    @Value("${cloud.aws.region.static}")
+    private String region;
 
 //   @PostConstruct
 //    private void init() {
@@ -123,25 +140,38 @@ public class ChatService {
 //        return uploadImageUrl;
 //    }
 
-    public String upload(MultipartFile multipartFile, String chatRoomId) {
+    @PostConstruct
+    public void setS3Client() {
+        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+
+        s3Client = AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(this.region)
+                .build();
+    }
+
+    public String upload(MultipartFile multipartFile, String chatRoomId) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
-        return upload(uploadFile, chatRoomId);
+        return upload(uploadFile, multipartFile, chatRoomId);
     }
 
-    private String upload(File uploadFile, String chatRoomId) {
+    private String upload(File uploadFile, MultipartFile multipartFile, String chatRoomId) throws IOException {
         String fileName = "upload/" + chatRoomId + "/" + uploadFile.getName();
-        String uploadS3Url = putS3(uploadFile, fileName);
+        String uploadS3Url = putS3(multipartFile, fileName);
         removeNewFile(uploadFile);
         return uploadS3Url;
     }
 
-    private String putS3(File uploadFile, String fileName) {
-        System.out.println(amazonS3Client);
-        System.out.println(bucket);
-        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.Private));
-        return amazonS3Client.getUrl(bucket, fileName).toString();
+    private String putS3(MultipartFile file, String fileName) throws IOException {
+//        System.out.println(amazonS3Client);
+//        System.out.println(bucket);
+//        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.Private));
+//        return amazonS3Client.getUrl(bucket, fileName).toString();
+        s3Client.putObject(new PutObjectRequest(bucket, file.getOriginalFilename(), file.getInputStream(), null)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+        return s3Client.getUrl(bucket, fileName).toString();
     }
 
     private void removeNewFile(File targetFile) {

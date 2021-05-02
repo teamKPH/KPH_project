@@ -38,4 +38,4 @@ out/
 
 application-datasource.yml
 application-oauth.yml
-aws.yml
+application-aws.yml
