@@ -76,7 +76,7 @@ http://localhost:3000
 👤 **ip99202**
 
 * Website: [ip99202.github.io](https://ip99202.github.io/)
-* Github: [@ip99202](https://github.com/vividswan)
+* Github: [@ip99202](https://github.com/ip99202)
 
 ## 🤝 Contributing
 
