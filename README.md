@@ -18,7 +18,7 @@
 ## 개발환경
 
 - backend
-  - java8
+  - java11
   - gradle
   - spring-boot 2.4.4
 
