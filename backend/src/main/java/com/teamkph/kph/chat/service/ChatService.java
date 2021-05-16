@@ -5,15 +5,14 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.teamkph.kph.chat.domain.MessageType;
 import com.teamkph.kph.chat.domain.chatMessage.ChatMessage;
 import com.teamkph.kph.chat.domain.chatMessage.ChatMessageRepository;
 import com.teamkph.kph.chat.domain.chatRoom.ChatRoom;
 import com.teamkph.kph.chat.domain.chatRoom.ChatRoomRepository;
-import com.teamkph.kph.chat.domain.MessageType;
 import com.teamkph.kph.chat.domain.userChatRoom.UserChatRoomRepository;
 import com.teamkph.kph.chat.dto.ChatMessageDto;
 import com.teamkph.kph.chat.dto.ChatRoomDto;
@@ -22,9 +21,8 @@ import com.teamkph.kph.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
@@ -32,22 +30,22 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class ChatService {
-//   private  Map<String, ChatRoomDto> chatRoomMap;
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final UserChatRoomRepository userChatRoomRepository;
     private final SimpMessageSendingOperations messagingTemplate;
-    private final AmazonS3Client amazonS3Client;
     private AmazonS3 s3Client;
 
-    @Value("{cloud.aws.s3.bucket}")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     @Value("${aws.credentials.accessKey}")
@@ -59,10 +57,6 @@ public class ChatService {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-//   @PostConstruct
-//    private void init() {
-//       chatRoomMap = new LinkedHashMap<>();
-//   }
 
     @Transactional
     public List<ChatRoomDto> findAllRoom() {
@@ -111,35 +105,6 @@ public class ChatService {
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 
-    // S3 File upload
-//    public String upload(MultipartFile multipartFile, String dir) {
-//
-//        File convertFile = new File(multipartFile.getOriginalFilename());
-//        if(convertFile.createNewFile()) {
-//            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-//                fos.write(file.getBytes());
-//            }
-//            return Optional.of(convertFile);
-//        }
-//
-//        return Optional.empty();
-//
-//        File uploadFile = convert(multipartFile)
-//                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
-//
-//
-//        String fileName = dir + "/" + uploadFile.getName();
-//        amazonS3Client.putObject(
-//                new PutObjectRequest(bucket, fileName, uploadFile)
-//                        .withCannedAcl(CannedAccessControlList.PublicRead));
-//        String uploadImageUrl = amazonS3Client.getUrl(bucket, fileName).toString();
-//
-//        // 기존 로컬에 저장된 파일 삭제
-//        uploadFile.delete();
-//
-//        return uploadImageUrl;
-//    }
-
     @PostConstruct
     public void setS3Client() {
         AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
@@ -165,11 +130,7 @@ public class ChatService {
     }
 
     private String putS3(MultipartFile file, String fileName) throws IOException {
-//        System.out.println(amazonS3Client);
-//        System.out.println(bucket);
-//        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.Private));
-//        return amazonS3Client.getUrl(bucket, fileName).toString();
-        s3Client.putObject(new PutObjectRequest(bucket, file.getOriginalFilename(), file.getInputStream(), null)
+        s3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
         return s3Client.getUrl(bucket, fileName).toString();
     }
@@ -195,4 +156,6 @@ public class ChatService {
             return Optional.empty();
         }
     }
+
+
 }
