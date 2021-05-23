@@ -4,9 +4,9 @@ import com.teamkph.kph.chat.dto.ChatMessageDto;
 import com.teamkph.kph.chat.dto.ChatRoomDto;
 import com.teamkph.kph.chat.service.ChatService;
 
+import com.teamkph.kph.responseRole.CommonResult;
 import com.teamkph.kph.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -72,4 +73,16 @@ public class ChatController {
     public String upload(@RequestParam("data")MultipartFile multipartFile) throws IOException {
         return chatService.upload(multipartFile, "static");
     }
+
+    @GetMapping("/list/{id}")
+    @ResponseBody
+    public CommonResult getFileList(@PathVariable Long id) throws IOException {
+        return chatService.getFileList(id);
+    }
+
+//    @PostMapping()
+//    @ResponseBody
+//    public CommonResult downloadFile(@PathVariable Long id, String fileName) throws IOException {
+//        return chatService.downloadFile(id, fileName);
+//    }
 }

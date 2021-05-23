@@ -6,8 +6,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import com.teamkph.kph.chat.domain.MessageType;
 import com.teamkph.kph.chat.domain.chatMessage.ChatMessage;
 import com.teamkph.kph.chat.domain.chatMessage.ChatMessageRepository;
@@ -17,13 +16,17 @@ import com.teamkph.kph.chat.domain.userChatRoom.UserChatRoomRepository;
 import com.teamkph.kph.chat.dto.ChatMessageDto;
 import com.teamkph.kph.chat.dto.ChatRoomDto;
 import com.teamkph.kph.chat.dto.UserChatRoomDto;
+import com.teamkph.kph.responseRole.CommonResult;
 import com.teamkph.kph.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+//import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
+//import org.apache.commons.io.FileUtils;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -89,7 +92,7 @@ public class ChatService {
     public void addUserToChatRoom(Long id, List<User> users) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).get();
         //UserChatRoom 생성 및 ChatRoom, User에 UserChatRoom 추가
-        for(User user : users) {
+        for (User user : users) {
             UserChatRoomDto userChatRoomDto = new UserChatRoomDto(user, chatRoom);
             userChatRoomRepository.save(userChatRoomDto.toEntity());
             chatRoom.update(userChatRoomDto.toEntity());
@@ -157,5 +160,30 @@ public class ChatService {
         }
     }
 
+    public CommonResult getFileList(Long roomId) {
+        ArrayList<String> list = new ArrayList<>();
+        ObjectListing objects = s3Client.listObjects(bucket, "upload/" + roomId);
+        do {
+            for (S3ObjectSummary objectSummary : objects.getObjectSummaries()) {
+                String[] tmp = objectSummary.getKey().split("/");
+                list.add(tmp[tmp.length - 1]);
+            }
+        } while (objects.isTruncated());
+        return new CommonResult("Success", list);
+    }
 
+//    public CommonResult downloadFile (Long roomId, String fileName) {
+//        String downloadFilePath = "s3.aws.com/" + roomId + "?key=" + fileName;
+//        File downloadFile = new File(downloadFilePath);
+//        try {
+//            S3Object s3object = s3Client.getObject(bucket, downloadFilePath);
+//            S3ObjectInputStream inputStream = s3object.getObjectContent();
+//
+//            FileCopyUtils.copy(inputStream, downloadFile);
+//            FileUtils.copy
+//        } catch (Exception e) {
+//            return new CommonResult("Error", null);
+//        }
+//        return new CommonResult("Success", downloadFile);
+//    }
 }

@@ -1,8 +1,9 @@
 package com.teamkph.kph.responseRole;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
 
+@Getter
 public class CommonResult {
 //    @ApiModelProperty(value = "응답 성공여부 : true/false")
 //    private boolean success;
@@ -15,4 +16,9 @@ public class CommonResult {
 
     @ApiModelProperty(value = "응답 데이터")
     private Object data;
+
+    public CommonResult(String msg, Object data) {
+        this.msg = msg;
+        this.data = data;
+    }
 }
