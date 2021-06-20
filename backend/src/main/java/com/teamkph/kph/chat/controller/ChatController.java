@@ -58,31 +58,25 @@ public class ChatController {
     }
 
     @MessageMapping("/message")
-    public void sendMessage(ChatMessageDto message) {
-        chatService.sendMessage(message);
+    public CommonResult sendMessage(ChatMessageDto message) {
+        return chatService.sendMessage(message);
     }
 
-
-    @GetMapping("/")
-    public String index() {
-        return "index";
-    }
-
-    @PostMapping("/upload")
+    @PostMapping("/upload/{roomId}")
     @ResponseBody
-    public String upload(@RequestParam("data")MultipartFile multipartFile) throws IOException {
-        return chatService.upload(multipartFile, "static");
+    public CommonResult upload(@PathVariable Long roomId, @RequestParam("data")MultipartFile multipartFile) throws IOException {
+        return chatService.upload(multipartFile, roomId);
     }
 
-    @GetMapping("/list/{id}")
+    @GetMapping("/list/{roomId}")
     @ResponseBody
-    public CommonResult getFileList(@PathVariable Long id) throws IOException {
-        return chatService.getFileList(id);
+    public CommonResult getFileList(@PathVariable Long roomId) throws IOException {
+        return chatService.getFileList(roomId);
     }
 
-//    @PostMapping()
-//    @ResponseBody
-//    public CommonResult downloadFile(@PathVariable Long id, String fileName) throws IOException {
-//        return chatService.downloadFile(id, fileName);
-//    }
+    @PostMapping("/download/{roomId}")
+    @ResponseBody
+    public CommonResult downloadFile(@PathVariable Long roomId, @RequestParam("file")String fileName) throws IOException {
+        return chatService.downloadFile(roomId, fileName);
+    }
 }

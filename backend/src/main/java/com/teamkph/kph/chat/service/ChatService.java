@@ -20,13 +20,11 @@ import com.teamkph.kph.responseRole.CommonResult;
 import com.teamkph.kph.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-//import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
-//import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FileUtils;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -101,31 +99,30 @@ public class ChatService {
 
     }
 
-    public void sendMessage(ChatMessageDto message) {
+    public CommonResult sendMessage(ChatMessageDto message) {
         if (MessageType.ENTER.equals(message.getType()))
             message.setContent(message.getSender() + "님이 입장하셨습니다.");
         chatMessageRepository.save(new ChatMessage(message));
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+        return new CommonResult("Success", "no data");
     }
 
     @PostConstruct
     public void setS3Client() {
         AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
-
         s3Client = AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(this.region)
                 .build();
     }
 
-    public String upload(MultipartFile multipartFile, String chatRoomId) throws IOException {
+    public CommonResult upload(MultipartFile multipartFile, Long chatRoomId) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
-
-        return upload(uploadFile, multipartFile, chatRoomId);
+        return new CommonResult("Success", upload(uploadFile, multipartFile, chatRoomId));
     }
 
-    private String upload(File uploadFile, MultipartFile multipartFile, String chatRoomId) throws IOException {
+    private String upload(File uploadFile, MultipartFile multipartFile, Long chatRoomId) throws IOException {
         String fileName = "upload/" + chatRoomId + "/" + uploadFile.getName();
         String uploadS3Url = putS3(multipartFile, fileName);
         removeNewFile(uploadFile);
@@ -172,18 +169,18 @@ public class ChatService {
         return new CommonResult("Success", list);
     }
 
-//    public CommonResult downloadFile (Long roomId, String fileName) {
-//        String downloadFilePath = "s3.aws.com/" + roomId + "?key=" + fileName;
-//        File downloadFile = new File(downloadFilePath);
-//        try {
-//            S3Object s3object = s3Client.getObject(bucket, downloadFilePath);
-//            S3ObjectInputStream inputStream = s3object.getObjectContent();
-//
-//            FileCopyUtils.copy(inputStream, downloadFile);
-//            FileUtils.copy
-//        } catch (Exception e) {
-//            return new CommonResult("Error", null);
-//        }
-//        return new CommonResult("Success", downloadFile);
-//    }
+    public CommonResult downloadFile(Long roomId, String fileName) {
+        //https://myhappyman.tistory.com/86
+        String downloadFilePath = "upload/" + roomId + "/" + fileName;
+        String localDownloadFilePath = "C:/Users/rlawl/Downloads/" + fileName;
+        File downloadFile = new File(localDownloadFilePath);
+        try {
+            S3Object s3object = s3Client.getObject(bucket, downloadFilePath);
+            S3ObjectInputStream inputStream = s3object.getObjectContent();
+            FileUtils.copyInputStreamToFile(inputStream, downloadFile);
+        } catch (Exception e) {
+            return new CommonResult("Error", e);
+        }
+        return new CommonResult("Success", downloadFile);
+    }
 }

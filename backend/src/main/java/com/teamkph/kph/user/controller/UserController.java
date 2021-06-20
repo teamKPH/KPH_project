@@ -31,15 +31,15 @@ public class UserController {
         return principal.getName();
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token",
-                    required = true, dataType = "String", paramType = "header")
-    })
-    @ApiOperation(value="사용자 정보 조회", notes="특정 사용자 정보를 조회합니다.")
-    @GetMapping("/user")
-    public ResponseEntity<UserInfoDto> findUserByEmail() throws Exception {
-        return userService.findUserByEmail();
-    }
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token",
+//                    required = true, dataType = "String", paramType = "header")
+//    })
+//    @ApiOperation(value="사용자 정보 조회", notes="특정 사용자 정보를 조회합니다.")
+//    @GetMapping("/user")
+//    public ResponseEntity<UserInfoDto> findUserByEmail() throws Exception {
+//        return userService.findUserByEmail();
+//    }
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token",
@@ -48,7 +48,6 @@ public class UserController {
     @ApiOperation(value="사용자 정보 수정", notes="특정 사용자의 정보를 수정합니다.")
     @PatchMapping("/user/{email}")
     public void fixUserInfo(@PathVariable("email") String email, @RequestBody @Valid UserUpdateDto user) throws Exception {
-        System.out.println(email);
         userService.fixUserInfo(email, user);
     }
 
